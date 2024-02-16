@@ -14,8 +14,8 @@ import SubcategoryContainer from "../components/SubcategoryContainer";
 import CategoryContainer from "../components/CategoryContainer";
 import ClusterContainer from "../components/ClusterContainer";
 import Toolbar from "../components/Toolbar";
-
-export default function Homepage({ data }) {
+import { data as newData} from "../components/data";
+export default function Homepage({  }) {
   const [company, setCompany] = useContext(CompanyContext);
   const [showModal, setShowModal] = useState(false);
 
@@ -53,7 +53,7 @@ export default function Homepage({ data }) {
 
   const handleSearch = () => {
     if (company.searchInput !== "") {
-      const result = data.values.filter(
+      const result = newData.values.filter(
         (item, index) => item.name.toLowerCase() === company.searchInput
       );
       result.length === 0
@@ -72,7 +72,7 @@ export default function Homepage({ data }) {
           <Toolbar
             setLoading={setLoading}
             setWithZoom={setWithZoom}
-            data={data}
+            data={newData}
           />
           <Tooltip
             /*  style={{ backgroundColor: "#083ECB", color: "#fff" }} */
@@ -121,7 +121,7 @@ export default function Homepage({ data }) {
                         >
                           {values?.subcategories?.map((subcat, index) => {
                             // if (subcat.name === 'Red Hat') console.log("subcat,", subcat, categorieName);
-                            const filteredSubcategory = data?.values.filter(
+                            const filteredSubcategory = newData?.values.filter(
                               (company, index) =>
                                 // company.category?.includes(categorieName) &&
                                 company?.subcategory?.includes(subcat.name)
@@ -162,25 +162,25 @@ export default function Homepage({ data }) {
   );
 }
 export async function getServerSideProps(context) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v2/companies`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-    },
-  });
+  // const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v2/companies`, {
+  //   method: "GET",
+  //   headers: {
+  //     Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+  //   },
+  // });
 
-  const data = await res.json();
-  const cleanNullValues = await data.values.filter(
-    (company) => company.cluster !== null || company.category !== null
-  );
+  // const data = await res.json();
+  // const cleanNullValues = await data.values.filter(
+  //   (company) => company.cluster !== null || company.category !== null
+  // );
 
-  if (!data) {
-    return {
-      notFound: true,
-    };
-  }
+  // if (!data) {
+  //   return {
+  //     notFound: true,
+  //   };
+  // }
 
   return {
-    props: { data: { values: cleanNullValues } },
+    props: { message: 'hola' },
   };
 }
